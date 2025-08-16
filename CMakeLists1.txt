@@ -1,0 +1,69 @@
+cmake_minimum_required(VERSION 3.19)
+
+project(QWindowKitExamples
+    VERSION 1.4.1.0
+    LANGUAGES CXX
+    DESCRIPTION "QWindowKit Examples"
+)
+
+# Set C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Enable Qt automoc, autouic, autorcc
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
+
+# Find Qt packages
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Qml Quick)
+if(NOT Qt6_FOUND)
+    find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets Qml Quick)
+endif()
+
+# Try to find QWindowKit from install directory first
+find_package(QWindowKit QUIET)
+
+# If not found, try to use the project's install directory
+if(NOT QWindowKit_FOUND)
+    set(QWindowKit_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../install/lib/cmake/QWindowKit")
+    if(EXISTS "${QWindowKit_DIR}/QWindowKitConfig.cmake")
+        find_package(QWindowKit REQUIRED PATHS ${QWindowKit_DIR})
+    else()
+        message(FATAL_ERROR "QWindowKit not found. Please build and install QWindowKit first, or specify QWindowKit_DIR.")
+    endif()
+endif()
+
+# Platform-specific settings
+if(WIN32)
+    # Remove problematic linker flags for MinGW
+    if(MINGW)
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
+        set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS}")
+        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS}")
+    else()
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /manifest:no")
+        set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} /manifest:no")
+        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /manifest:no")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /utf-8")
+    endif()
+    
+    if(NOT DEFINED CMAKE_DEBUG_POSTFIX)
+        set(CMAKE_DEBUG_POSTFIX "d")
+    endif()
+elseif(MINGW)
+    set(CMAKE_STATIC_LIBRARY_PREFIX "")
+    set(CMAKE_SHARED_LIBRARY_PREFIX "")
+endif()
+
+# Add shared resources
+add_subdirectory(shared)
+
+# Add examples
+if(TARGET QWindowKit::Widgets)
+    add_subdirectory(mainwindow)
+endif()
+
+if(TARGET QWindowKit::Quick)
+    add_subdirectory(qml)
+endif()
