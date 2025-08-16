@@ -5,6 +5,7 @@ project(QWKExample_QML VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+list(APPEND CMAKE_PREFIX_PATH "D:/Software/qwindowkit/install/lib/cmake")
 # Set module path for custom find scripts
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
@@ -47,31 +48,3 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE Qt6::Quick
     PRIVATE QWindowKit::Quick
 )
-
-# Windows-specific settings
-if(WIN32)
-    # Add Windows manifest
-    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/app.manifest")
-        set_target_properties(${PROJECT_NAME} PROPERTIES
-            WIN32_EXECUTABLE TRUE
-            LINK_FLAGS "/MANIFEST:NO"
-        )
-    endif()
-    
-    # Copy QWindowKit runtime DLLs (if function exists)
-    if(COMMAND qwindowkit_copy_runtime)
-        qwindowkit_copy_runtime(${PROJECT_NAME})
-    endif()
-endif()
-
-# macOS-specific settings
-if(APPLE)
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        MACOSX_BUNDLE TRUE
-    )
-    
-    # Copy QWindowKit runtime libraries (if function exists)
-    if(COMMAND qwindowkit_copy_runtime)
-        qwindowkit_copy_runtime(${PROJECT_NAME})
-    endif()
-endif()

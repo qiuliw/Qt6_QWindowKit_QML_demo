@@ -1,14 +1,5 @@
 if (NOT QWindowKit_FOUND)
 
-    list(APPEND CMAKE_PREFIX_PATH "D:/Software/qwindowkit/install/lib/cmake")
-    if(EXISTS "D:/Software/qwindowkit/install/lib/cmake/QWindowKit/QWindowKitConfig.cmake")
-        include("D:/Software/qwindowkit/install/lib/cmake/QWindowKit/QWindowKitConfig.cmake")
-        set(QWindowKit_FOUND TRUE)
-        return()
-    endif()
-
-    message(STATUS "QWindowKitConfig.cmake not found, fallback to manual settings")
-
     if (NOT QWINDOWKIT_ROOT_DIR)
         set(QWINDOWKIT_ROOT_DIR "D:/Software/qwindowkit/install"
             CACHE PATH "QWindowKit root directory")
@@ -54,6 +45,34 @@ if (NOT QWindowKit_FOUND)
 endif()
 
 
+# # Windows-specific settings
+# if(WIN32)
+#     # Add Windows manifest
+#     if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/app.manifest")
+#         set_target_properties(${PROJECT_NAME} PROPERTIES
+#             WIN32_EXECUTABLE TRUE
+#             LINK_FLAGS "/MANIFEST:NO"
+#         )
+#     endif()
+    
+#     # Copy QWindowKit runtime DLLs (if function exists)
+#     if(COMMAND qwindowkit_copy_runtime)
+#         qwindowkit_copy_runtime(${PROJECT_NAME})
+#     endif()
+# endif()
+
+# # macOS-specific settings
+# if(APPLE)
+#     set_target_properties(${PROJECT_NAME} PROPERTIES
+#         MACOSX_BUNDLE TRUE
+#     )
+    
+#     # Copy QWindowKit runtime libraries (if function exists)
+#     if(COMMAND qwindowkit_copy_runtime)
+#         qwindowkit_copy_runtime(${PROJECT_NAME})
+#     endif()
+# endif()
+
 # =======================
 # QWindowKit 拷贝运行时 DLL
 # =======================
@@ -81,3 +100,5 @@ function(qwindowkit_copy_runtime TARGET_NAME)
         message(STATUS "QWindowKit shared libs will be copied from ${QWINDOWKIT_LIB_DIR} to target runtime dir")
     endif()
 endfunction()
+
+
