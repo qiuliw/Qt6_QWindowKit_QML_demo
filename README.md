@@ -4,7 +4,7 @@ Qt6的QWindowKit QML的模板示例，可以直接在此基础上编写项目
 
 - QWindowKit 1.4.0 - Release
 
-![1755389621146](https://file+.vscode-resource.vscode-cdn.net/d%3A/Github/QML_MusicPlay/image/README/1755389621146.png)
+![1755389621146](./image/README/1755389621146.png)
 
 ## 先编译QWindowKit
 
