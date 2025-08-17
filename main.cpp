@@ -45,6 +45,6 @@ int main(int argc, char *argv[]) {
 
     engine.rootContext()->setContextProperty(QStringLiteral("$curveRenderingAvailable"), QVariant(curveRenderingAvailable));
     QWK::registerTypes(&engine);
-    engine.load(QUrl(QStringLiteral("qrc:/QWKExample/main.qml")));
+    engine.load(QUrl(QStringLiteral("qrc:/QPlayer/main.qml")));
     return application.exec();
 }

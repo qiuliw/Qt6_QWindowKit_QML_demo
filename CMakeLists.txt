@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(QWKExample_QML VERSION 0.1 LANGUAGES CXX)
+project(QPlayer VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -20,7 +20,7 @@ qt_add_executable(${PROJECT_NAME}
 )
 
 qt_add_qml_module(${PROJECT_NAME}
-    URI QWKExample
+    URI QPlayer
     VERSION 1.0
     QML_FILES 
         main.qml

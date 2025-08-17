@@ -1,7 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
-import Qt.labs.platform 1.1
 import QWindowKit 1.0
 import QtQuick.Layouts 1.15
 
@@ -12,7 +11,7 @@ Window {
     width: 1010
     height: 710
     color: darkStyle.windowBackgroundColor
-    title: qsTr("QWindowKit QtQuick Demo")
+    title: qsTr("QPlayer")
     Component.onCompleted: {
         windowAgent.setup(window)
         windowAgent.setWindowAttribute("dark-mode", true)
@@ -24,14 +23,22 @@ Window {
     // 主题颜色
     QtObject {
         id: lightStyle
-        readonly property color windowBackgroundColor: "#2F0000"
+        readonly property color windowBackgroundColor: "#1e1e2e"
+        readonly property color sidebarBackgroundColor: "#181825" 
+        readonly property color mainViewBackgroundColor: "#1e1e2e"
+        readonly property color bottomBarBackgroundColor: "#11111b"
+        readonly property color menuItemBackgroundColor: "#313244"
+        readonly property color menuItemHoverColor: "#45475a"
+        readonly property color titleBarBackgroundColor: "#11111b"
     }
     QtObject {
         id: darkStyle
-        readonly property color windowBackgroundColor: "#1E1E1E"
-        readonly property color sidebarBackgroundColor: "#2F2F2F"
-        readonly property color mainViewBackgroundColor: "#1E1E1E"
-        readonly property color bottomBarBackgroundColor: "#2F2F2F"
+        readonly property color windowBackgroundColor: "#1e1e2e"
+        readonly property color sidebarBackgroundColor: "#181825"
+        readonly property color mainViewBackgroundColor: "#1e1e2e"
+        readonly property color bottomBarBackgroundColor: "#11111b"
+        readonly property color menuItemBackgroundColor: "#313244"
+        readonly property color menuItemHoverColor: "#45475a"
     }
 
     Timer {
@@ -45,81 +52,439 @@ Window {
         id: windowAgent
     }
 
-    // 顶部栏
+    // 左侧边栏
+    Rectangle {
+        id: sidebar
+        width: 200
+        anchors {
+            top: parent.top
+            bottom: bottomBar.top
+            left: parent.left
+        }
+        color: lightStyle.sidebarBackgroundColor
+
+        // 使用ColumnLayout组织左侧边栏内容
+        ColumnLayout {
+            id: sidebarLayout
+            anchors {
+                top: parent.top
+                left: parent.left
+                right: parent.right
+                bottom: parent.bottom
+                margins: 10
+            }
+            spacing: 5
+
+            // 顶部Logo区域
+            Rectangle {
+                id: sidebarTop
+                Layout.preferredHeight: 50
+                Layout.fillWidth: true
+                color: "transparent"
+
+                // 软件名
+                Text {
+                    anchors.centerIn: parent
+                    text: window.title
+                    font.pixelSize: 32
+                    font.bold: true
+                    color: "#cba6f7"
+                }
+            }
+
+            // 菜单分隔线
+            Rectangle {
+                Layout.preferredHeight: 1
+                Layout.fillWidth: true
+                color: "#444444"
+            }
+
+            // 主要菜单项
+            // 发现音乐
+            Rectangle {
+                id: discoverMusicItem
+                Layout.preferredHeight: 40
+                Layout.fillWidth: true
+                color: darkStyle.menuItemBackgroundColor
+                radius: 5
+
+                Text {
+                    anchors.centerIn: parent
+                    text: qsTr("发现音乐")
+                    color: "#FFFFFF"
+                    font.pixelSize: 14
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onEntered: parent.color = darkStyle.menuItemHoverColor
+                    onExited: parent.color = darkStyle.menuItemBackgroundColor
+                    onClicked: console.log("发现音乐 clicked")
+                }
+            }
+
+            // 我的音乐
+            Rectangle {
+                id: myMusicItem
+                Layout.preferredHeight: 40
+                Layout.fillWidth: true
+                color: "transparent"
+
+                Text {
+                    anchors.centerIn: parent
+                    text: qsTr("我的音乐")
+                    color: "#CCCCCC"
+                    font.pixelSize: 14
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onEntered: parent.color = darkStyle.menuItemHoverColor
+                    onExited: parent.color = "transparent"
+                    onClicked: console.log("我的音乐 clicked")
+                }
+            }
+
+            // 朋友
+            Rectangle {
+                id: friendsItem
+                Layout.preferredHeight: 40
+                Layout.fillWidth: true
+                color: "transparent"
+
+                Text {
+                    anchors.centerIn: parent
+                    text: qsTr("朋友")
+                    color: "#CCCCCC"
+                    font.pixelSize: 14
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onEntered: parent.color = darkStyle.menuItemHoverColor
+                    onExited: parent.color = "transparent"
+                    onClicked: console.log("朋友 clicked")
+                }
+            }
+
+            // 商城
+            Rectangle {
+                id: mallItem
+                Layout.preferredHeight: 40
+                Layout.fillWidth: true
+                color: "transparent"
+
+                Text {
+                    anchors.centerIn: parent
+                    text: qsTr("商城")
+                    color: "#CCCCCC"
+                    font.pixelSize: 14
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onEntered: parent.color = darkStyle.menuItemHoverColor
+                    onExited: parent.color = "transparent"
+                    onClicked: console.log("商城 clicked")
+                }
+            }
+
+            // 音乐人
+            Rectangle {
+                id: musicianItem
+                Layout.preferredHeight: 40
+                Layout.fillWidth: true
+                color: "transparent"
+
+                Text {
+                    anchors.centerIn: parent
+                    text: qsTr("音乐人")
+                    color: "#CCCCCC"
+                    font.pixelSize: 14
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onEntered: parent.color = darkStyle.menuItemHoverColor
+                    onExited: parent.color = "transparent"
+                    onClicked: console.log("音乐人 clicked")
+                }
+            }
+
+            // 下载管理
+            Rectangle {
+                id: downloadItem
+                Layout.preferredHeight: 40
+                Layout.fillWidth: true
+                color: "transparent"
+
+                Text {
+                    anchors.centerIn: parent
+                    text: qsTr("下载管理")
+                    color: "#CCCCCC"
+                    font.pixelSize: 14
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onEntered: parent.color = darkStyle.menuItemHoverColor
+                    onExited: parent.color = "transparent"
+                    onClicked: console.log("下载管理 clicked")
+                }
+            }
+
+            // 我的收藏
+            Rectangle {
+                id: favoriteItem
+                Layout.preferredHeight: 40
+                Layout.fillWidth: true
+                color: "transparent"
+
+                Text {
+                    anchors.centerIn: parent
+                    text: qsTr("我的收藏")
+                    color: "#CCCCCC"
+                    font.pixelSize: 14
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onEntered: parent.color = darkStyle.menuItemHoverColor
+                    onExited: parent.color = "transparent"
+                    onClicked: console.log("我的收藏 clicked")
+                }
+            }
+
+            // 本地音乐
+            Rectangle {
+                id: localMusicItem
+                Layout.preferredHeight: 40
+                Layout.fillWidth: true
+                color: "transparent"
+
+                Text {
+                    anchors.centerIn: parent
+                    text: qsTr("本地音乐")
+                    color: "#CCCCCC"
+                    font.pixelSize: 14
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onEntered: parent.color = darkStyle.menuItemHoverColor
+                    onExited: parent.color = "transparent"
+                    onClicked: console.log("本地音乐 clicked")
+                }
+            }
+
+            // 博客
+            Rectangle {
+                id: blogItem
+                Layout.preferredHeight: 40
+                Layout.fillWidth: true
+                color: "transparent"
+
+                Text {
+                    anchors.centerIn: parent
+                    text: qsTr("博客")
+                    color: "#CCCCCC"
+                    font.pixelSize: 14
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onEntered: parent.color = darkStyle.menuItemHoverColor
+                    onExited: parent.color = "transparent"
+                    onClicked: console.log("博客 clicked")
+                }
+            }
+
+            // 创建的歌单标题
+            Text {
+                Layout.topMargin: 20
+                Layout.fillWidth: true
+                text: qsTr("创建的歌单")
+                color: "#AAAAAA"
+                font.pixelSize: 12
+            }
+
+            // 创建的歌单列表项
+            Rectangle {
+                Layout.preferredHeight: 30
+                Layout.fillWidth: true
+                color: "transparent"
+
+                RowLayout {
+                    anchors.fill: parent
+                    spacing: 10
+
+                    Text {
+                        text: "▷"
+                        color: "#AAAAAA"
+                        font.pixelSize: 12
+                    }
+
+                    Text {
+                        text: qsTr("我喜欢的音乐")
+                        color: "#CCCCCC"
+                        font.pixelSize: 12
+                    }
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onEntered: parent.color = darkStyle.menuItemHoverColor
+                    onExited: parent.color = "transparent"
+                    onClicked: console.log("我喜欢的音乐 clicked")
+                }
+            }
+
+            Rectangle {
+                Layout.preferredHeight: 30
+                Layout.fillWidth: true
+                color: "transparent"
+
+                RowLayout {
+                    anchors.fill: parent
+                    spacing: 10
+
+                    Text {
+                        text: "▷"
+                        color: "#AAAAAA"
+                        font.pixelSize: 12
+                    }
+
+                    Text {
+                        text: qsTr("私人FM")
+                        color: "#CCCCCC"
+                        font.pixelSize: 12
+                    }
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onEntered: parent.color = darkStyle.menuItemHoverColor
+                    onExited: parent.color = "transparent"
+                    onClicked: console.log("私人FM clicked")
+                }
+            }
+
+            Rectangle {
+                Layout.preferredHeight: 30
+                Layout.fillWidth: true
+                color: "transparent"
+
+                RowLayout {
+                    anchors.fill: parent
+                    spacing: 10
+
+                    Text {
+                        text: "▷"
+                        color: "#AAAAAA"
+                        font.pixelSize: 12
+                    }
+
+                    Text {
+                        text: qsTr("摇滚音乐")
+                        color: "#CCCCCC"
+                        font.pixelSize: 12
+                    }
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onEntered: parent.color = darkStyle.menuItemHoverColor
+                    onExited: parent.color = "transparent"
+                    onClicked: console.log("摇滚音乐 clicked")
+                }
+            }
+        }
+    }
+
+    // 顶部栏 - 不再依赖QWindowKit
     Rectangle {
         id: titleBar
         anchors {
             top: parent.top
-            left: parent.left
+            left: sidebar.right
             right: parent.right
         }
-        height: 32
-        color: "transparent"
+        height: 60
+        color: lightStyle.titleBarBackgroundColor
         Component.onCompleted: windowAgent.setTitleBar(titleBar)
 
-        // 软件名
-        Text {
-            anchors {
-                verticalCenter: parent.verticalCenter
-                left: parent.left
-                leftMargin: 10
-            }
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            text: window.title
-            font.pixelSize: 14
-            color: "#ECECEC"
-        }
-        // 窗口按钮
-        Row {
-            anchors {
-                top: parent.top
-                right: parent.right
-            }
-            height: parent.height
-
-            QWKButton {
-                id: minButton
-                height: parent.height
-                source: "qrc:/QWKExample/resources/window-bar/minimize.svg"
-                onClicked: window.showMinimized()
-                Component.onCompleted: windowAgent.setSystemButton(WindowAgent.Minimize, minButton)
-            }
-
-            QWKButton {
-                id: maxButton
-                height: parent.height
-                source: window.visibility === Window.Maximized ? "qrc:/QWKExample/resources/window-bar/restore.svg" : "qrc:/QWKExample/resources/window-bar/maximize.svg"
-                onClicked: {
-                    if (window.visibility === Window.Maximized) {
-                        window.showNormal()
-                    } else {
-                        window.showMaximized()
-                    }
+        // 内边距容器
+        Item {
+            anchors.fill: parent
+            anchors.margins: 20
+            
+            // 窗口按钮
+            Row {
+                anchors {
+                    right: parent.right // 靠右
+                    verticalCenter: parent.verticalCenter // 内容居中
                 }
-                Component.onCompleted: windowAgent.setSystemButton(WindowAgent.Maximize, maxButton)
-            }
+                spacing: 5
 
-            QWKButton {
-                id: closeButton
-                height: parent.height
-                source: "qrc:/QWKExample/resources/window-bar/close.svg"
-                background: Rectangle {
-                    color: {
-                        if (!closeButton.enabled) {
-                            return "gray";
-                        }
-                        if (closeButton.pressed) {
-                            return "#e81123";
-                        }
-                        if (closeButton.hovered) {
-                            return "#e81123";
-                        }
-                        return "transparent";
+                QWKButton {
+                    id: minButton
+                    width: 30
+                    height: 30
+                    source: "qrc:/QPlayer/resources/window-bar/minimize.svg"
+                    background: Rectangle {
+                        color: "transparent"
+                        border.color: minButton.hovered ? "#CCCCCC" : "transparent"
+                        radius: 2
                     }
+                    onClicked: window.showMinimized()
+                    Component.onCompleted: windowAgent.setSystemButton(WindowAgent.Minimize, minButton)
                 }
-                onClicked: window.close()
-                Component.onCompleted: windowAgent.setSystemButton(WindowAgent.Close, closeButton)
+
+                QWKButton {
+                    id: maxButton
+                    width: 30
+                    height: 30
+                    source: window.visibility === Window.Maximized ? "qrc:/QPlayer/resources/window-bar/restore.svg" : "qrc:/QPlayer/resources/window-bar/maximize.svg"
+                    background: Rectangle {
+                        color: "transparent"
+                        border.color: maxButton.hovered ? "#CCCCCC" : "transparent"
+                        radius: 2
+                    }
+                    onClicked: {
+                        if (window.visibility === Window.Maximized) {
+                            window.showNormal()
+                        } else {
+                            window.showMaximized()
+                        }
+                    }
+                    Component.onCompleted: windowAgent.setSystemButton(WindowAgent.Maximize, maxButton)
+                }
+
+                QWKButton {
+                    id: closeButton
+                    width: 30
+                    height: 30
+                    source: "qrc:/QPlayer/resources/window-bar/close.svg"
+                    background: Rectangle {
+                        color: "transparent"
+                        border.color: closeButton.hovered ? "#e81123" : "transparent"
+                        radius: 2
+                    }
+                    onClicked: window.close()
+                    Component.onCompleted: windowAgent.setSystemButton(WindowAgent.Close, closeButton)
+                }
             }
         }
     }
@@ -129,197 +494,12 @@ Window {
         id: mainContent
         anchors {
             top: titleBar.bottom
-            left: parent.left
+            left: sidebar.right
             right: parent.right
             bottom: bottomBar.top
         }
         color: "transparent"
 
-        // 使用 Row 布局组织左侧边栏和右侧主视图
-        Row {
-            anchors.fill: parent
-
-            // 左侧边栏
-            Rectangle {
-                id: sidebar
-                width: 200
-                height: parent.height
-                color: darkStyle.sidebarBackgroundColor
-
-                Column {
-                    anchors {
-                        top: parent.top
-                        left: parent.left
-                        right: parent.right
-                        margins: 10
-                    }
-                    spacing: 15
-
-                    Rectangle {
-                        width: parent.width
-                        height: 40
-                        color: "#3F3F3F"
-                        radius: 5
-
-                        Text {
-                            anchors.centerIn: parent
-                            text: qsTr("发现音乐")
-                            color: "#FFFFFF"
-                            font.pixelSize: 14
-                        }
-                    }
-
-                    Rectangle {
-                        width: parent.width
-                        height: 40
-                        color: "transparent"
-
-                        Text {
-                            anchors.centerIn: parent
-                            text: qsTr("我的音乐")
-                            color: "#CCCCCC"
-                            font.pixelSize: 14
-                        }
-                    }
-
-                    Rectangle {
-                        width: parent.width
-                        height: 40
-                        color: "transparent"
-
-                        Text {
-                            anchors.centerIn: parent
-                            text: qsTr("朋友")
-                            color: "#CCCCCC"
-                            font.pixelSize: 14
-                        }
-                    }
-
-                    Rectangle {
-                        width: parent.width
-                        height: 40
-                        color: "transparent"
-
-                        Text {
-                            anchors.centerIn: parent
-                            text: qsTr("商城")
-                            color: "#CCCCCC"
-                            font.pixelSize: 14
-                        }
-                    }
-
-                    Rectangle {
-                        width: parent.width
-                        height: 40
-                        color: "transparent"
-
-                        Text {
-                            anchors.centerIn: parent
-                            text: qsTr("音乐人")
-                            color: "#CCCCCC"
-                            font.pixelSize: 14
-                        }
-                    }
-                }
-            }
-
-            // 右侧主视图
-            Rectangle {
-                id: mainView
-                width: parent.width - sidebar.width
-                height: parent.height
-                color: darkStyle.mainViewBackgroundColor
-
-                // 主视图内容
-                Column {
-                    anchors {
-                        fill: parent
-                        margins: 20
-                    }
-                    spacing: 20
-
-                    Text {
-                        text: qsTr("推荐歌单")
-                        color: "#FFFFFF"
-                        font {
-                            pixelSize: 20
-                            bold: true
-                        }
-                    }
-
-                    // 使用 GridView 实现自适应布局
-                    GridView {
-                        id: songGridView
-                        width: parent.width
-                        height: parent.height - 40 // 减去标题高度
-                        cellWidth: 170
-                        cellHeight: 220
-                        model: 20 // 增加更多项目以测试换行效果
-                        
-                        // 添加移动动画
-                        displaced: Transition {
-                            NumberAnimation { 
-                                properties: "x,y" 
-                                duration: 400
-                                easing.type: Easing.OutCubic
-                            }
-                        }
-                        
-                        // 根据窗口宽度动态调整列数
-                        onWidthChanged: {
-                            var columns = Math.max(1, Math.floor(width / 170));
-                            cellWidth = Math.max(150, (width - spacing * (columns - 1)) / columns);
-                        }
-
-                        delegate: Rectangle {
-                            id: songItem
-                            width: songGridView.cellWidth - 20
-                            height: songGridView.cellHeight - 20
-                            color: "#2F2F2F"
-                            radius: 8
-
-                            // 添加进入动画
-                            opacity: 0
-                            Behavior on opacity {
-                                NumberAnimation { duration: 300 }
-                            }
-                            Component.onCompleted: {
-                                opacity = 1
-                            }
-
-                            Column {
-                                anchors {
-                                    fill: parent
-                                    margins: 10
-                                }
-                                spacing: 10
-
-                                Rectangle {
-                                    width: parent.width
-                                    height: 130
-                                    color: "#3F3F3F"
-                                    radius: 5
-                                }
-
-                                Text {
-                                    text: qsTr("歌单 ") + (index + 1)
-                                    color: "#FFFFFF"
-                                    font.pixelSize: 14
-                                    elide: Text.ElideRight
-                                }
-
-                                Text {
-                                    text: qsTr("描述信息...")
-                                    color: "#AAAAAA"
-                                    font.pixelSize: 12
-                                    elide: Text.ElideRight
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 
     // 底部栏
