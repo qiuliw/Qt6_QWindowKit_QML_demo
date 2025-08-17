@@ -3,13 +3,14 @@ import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import Qt.labs.platform 1.1
 import QWindowKit 1.0
+import QtQuick.Layouts 1.15
 
 Window {
     property bool showWhenReady: true
 
     id: window
-    width: 800
-    height: 600
+    width: 1010
+    height: 710
     color: darkStyle.windowBackgroundColor
     title: qsTr("QWindowKit QtQuick Demo")
     Component.onCompleted: {
@@ -20,13 +21,17 @@ Window {
         }
     }
 
+    // 主题颜色
     QtObject {
         id: lightStyle
+        readonly property color windowBackgroundColor: "#2F0000"
     }
-
     QtObject {
         id: darkStyle
         readonly property color windowBackgroundColor: "#1E1E1E"
+        readonly property color sidebarBackgroundColor: "#2F2F2F"
+        readonly property color mainViewBackgroundColor: "#1E1E1E"
+        readonly property color bottomBarBackgroundColor: "#2F2F2F"
     }
 
     Timer {
@@ -40,11 +45,7 @@ Window {
         id: windowAgent
     }
 
-    TapHandler {
-        acceptedButtons: Qt.RightButton
-        onTapped: contextMenu.open()
-    }
-
+    // 顶部栏
     Rectangle {
         id: titleBar
         anchors {
@@ -53,29 +54,14 @@ Window {
             right: parent.right
         }
         height: 32
-        //color: window.active ? "#3C3C3C" : "#505050"
         color: "transparent"
         Component.onCompleted: windowAgent.setTitleBar(titleBar)
 
-        Image {
-            id: iconButton
-            anchors {
-                verticalCenter: parent.verticalCenter
-                left: parent.left
-                leftMargin: 10
-            }
-            width: 18
-            height: 18
-            mipmap: true
-            source: "qrc:/QWKExample/resources/app/example.png"
-            fillMode: Image.PreserveAspectFit
-            Component.onCompleted: windowAgent.setSystemButton(WindowAgent.WindowIcon, iconButton)
-        }
-
+        // 软件名
         Text {
             anchors {
                 verticalCenter: parent.verticalCenter
-                left: iconButton.right
+                left: parent.left
                 leftMargin: 10
             }
             horizontalAlignment: Text.AlignHCenter
@@ -84,7 +70,7 @@ Window {
             font.pixelSize: 14
             color: "#ECECEC"
         }
-
+        // 窗口按钮
         Row {
             anchors {
                 top: parent.top
@@ -138,120 +124,320 @@ Window {
         }
     }
 
-    Label {
-        id: timeLabel
-        anchors.centerIn: parent
-        font {
-            pointSize: 75
-            bold: true
+    // 主体内容区域
+    Rectangle {
+        id: mainContent
+        anchors {
+            top: titleBar.bottom
+            left: parent.left
+            right: parent.right
+            bottom: bottomBar.top
         }
-        color: "#FEFEFE"
-        Component.onCompleted: {
-            if ($curveRenderingAvailable) {
-                console.log("Curve rendering for text is available.")
-                timeLabel.renderType = Text.CurveRendering
+        color: "transparent"
+
+        // 使用 Row 布局组织左侧边栏和右侧主视图
+        Row {
+            anchors.fill: parent
+
+            // 左侧边栏
+            Rectangle {
+                id: sidebar
+                width: 200
+                height: parent.height
+                color: darkStyle.sidebarBackgroundColor
+
+                Column {
+                    anchors {
+                        top: parent.top
+                        left: parent.left
+                        right: parent.right
+                        margins: 10
+                    }
+                    spacing: 15
+
+                    Rectangle {
+                        width: parent.width
+                        height: 40
+                        color: "#3F3F3F"
+                        radius: 5
+
+                        Text {
+                            anchors.centerIn: parent
+                            text: qsTr("发现音乐")
+                            color: "#FFFFFF"
+                            font.pixelSize: 14
+                        }
+                    }
+
+                    Rectangle {
+                        width: parent.width
+                        height: 40
+                        color: "transparent"
+
+                        Text {
+                            anchors.centerIn: parent
+                            text: qsTr("我的音乐")
+                            color: "#CCCCCC"
+                            font.pixelSize: 14
+                        }
+                    }
+
+                    Rectangle {
+                        width: parent.width
+                        height: 40
+                        color: "transparent"
+
+                        Text {
+                            anchors.centerIn: parent
+                            text: qsTr("朋友")
+                            color: "#CCCCCC"
+                            font.pixelSize: 14
+                        }
+                    }
+
+                    Rectangle {
+                        width: parent.width
+                        height: 40
+                        color: "transparent"
+
+                        Text {
+                            anchors.centerIn: parent
+                            text: qsTr("商城")
+                            color: "#CCCCCC"
+                            font.pixelSize: 14
+                        }
+                    }
+
+                    Rectangle {
+                        width: parent.width
+                        height: 40
+                        color: "transparent"
+
+                        Text {
+                            anchors.centerIn: parent
+                            text: qsTr("音乐人")
+                            color: "#CCCCCC"
+                            font.pixelSize: 14
+                        }
+                    }
+                }
+            }
+
+            // 右侧主视图
+            Rectangle {
+                id: mainView
+                width: parent.width - sidebar.width
+                height: parent.height
+                color: darkStyle.mainViewBackgroundColor
+
+                // 主视图内容
+                Column {
+                    anchors {
+                        fill: parent
+                        margins: 20
+                    }
+                    spacing: 20
+
+                    Text {
+                        text: qsTr("推荐歌单")
+                        color: "#FFFFFF"
+                        font {
+                            pixelSize: 20
+                            bold: true
+                        }
+                    }
+
+                    // 使用 GridView 实现自适应布局
+                    GridView {
+                        id: songGridView
+                        width: parent.width
+                        height: parent.height - 40 // 减去标题高度
+                        cellWidth: 170
+                        cellHeight: 220
+                        model: 20 // 增加更多项目以测试换行效果
+                        
+                        // 添加移动动画
+                        displaced: Transition {
+                            NumberAnimation { 
+                                properties: "x,y" 
+                                duration: 400
+                                easing.type: Easing.OutCubic
+                            }
+                        }
+                        
+                        // 根据窗口宽度动态调整列数
+                        onWidthChanged: {
+                            var columns = Math.max(1, Math.floor(width / 170));
+                            cellWidth = Math.max(150, (width - spacing * (columns - 1)) / columns);
+                        }
+
+                        delegate: Rectangle {
+                            id: songItem
+                            width: songGridView.cellWidth - 20
+                            height: songGridView.cellHeight - 20
+                            color: "#2F2F2F"
+                            radius: 8
+
+                            // 添加进入动画
+                            opacity: 0
+                            Behavior on opacity {
+                                NumberAnimation { duration: 300 }
+                            }
+                            Component.onCompleted: {
+                                opacity = 1
+                            }
+
+                            Column {
+                                anchors {
+                                    fill: parent
+                                    margins: 10
+                                }
+                                spacing: 10
+
+                                Rectangle {
+                                    width: parent.width
+                                    height: 130
+                                    color: "#3F3F3F"
+                                    radius: 5
+                                }
+
+                                Text {
+                                    text: qsTr("歌单 ") + (index + 1)
+                                    color: "#FFFFFF"
+                                    font.pixelSize: 14
+                                    elide: Text.ElideRight
+                                }
+
+                                Text {
+                                    text: qsTr("描述信息...")
+                                    color: "#AAAAAA"
+                                    font.pixelSize: 12
+                                    elide: Text.ElideRight
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 
-    Menu {
-        id: contextMenu
-
-        Menu {
-            id: themeMenu
-            title: qsTr("Theme")
-
-            MenuItemGroup {
-                id: themeMenuGroup
-                items: themeMenu.items
-            }
-
-            MenuItem {
-                text: qsTr("Light")
-                checkable: true
-                onTriggered: windowAgent.setWindowAttribute("dark-mode", false)
-            }
-
-            MenuItem {
-                text: qsTr("Dark")
-                checkable: true
-                checked: true
-                onTriggered: windowAgent.setWindowAttribute("dark-mode", true)
-            }
+    // 底部栏
+    Rectangle {
+        id: bottomBar
+        anchors {
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
         }
+        height: 60
+        color: darkStyle.bottomBarBackgroundColor
 
-        Menu {
-            id: specialEffectMenu
-            title: qsTr("Special effect")
+        // 使用 Row 布局组织底部栏内容
+        Row {
+            anchors {
+                verticalCenter: parent.verticalCenter
+                left: parent.left
+                right: parent.right
+                margins: 20
+            }
+            spacing: 20
+            layoutDirection: Qt.LeftToRight
 
-            MenuItemGroup {
-                id: specialEffectMenuGroup
-                items: specialEffectMenu.items
+            // 音乐封面
+            Rectangle {
+                width: 40
+                height: 40
+                color: "#3F3F3F"
             }
 
-            MenuItem {
-                enabled: Qt.platform.os === "windows"
-                text: qsTr("None")
-                checkable: true
-                checked: true
-                onTriggered: {
-                    window.color = darkStyle.windowBackgroundColor
-                    windowAgent.setWindowAttribute("dwm-blur", false)
-                    windowAgent.setWindowAttribute("acrylic-material", false)
-                    windowAgent.setWindowAttribute("mica", false)
-                    windowAgent.setWindowAttribute("mica-alt", false)
+            // 音乐信息和控制按钮
+            Column {
+                spacing: 5
+                Layout.alignment: Qt.AlignVCenter
+
+                Text {
+                    text: qsTr("歌曲名称")
+                    color: "#FFFFFF"
+                    font.pixelSize: 14
+                }
+
+                Text {
+                    text: qsTr("歌手名称")
+                    color: "#AAAAAA"
+                    font.pixelSize: 12
+                }
+
+                // 控制按钮
+                Row {
+                    spacing: 15
+
+                    Text {
+                        text: "◀◀"
+                        color: "#FFFFFF"
+                        font.pixelSize: 14
+                    }
+
+                    Text {
+                        text: "▶"
+                        color: "#FFFFFF"
+                        font.pixelSize: 14
+                    }
+
+                    Text {
+                        text: "▶▶"
+                        color: "#FFFFFF"
+                        font.pixelSize: 14
+                    }
                 }
             }
 
-            MenuItem {
-                enabled: Qt.platform.os === "windows"
-                text: qsTr("DWM blur")
-                checkable: true
-                onTriggered: {
-                    window.color = "transparent"
-                    windowAgent.setWindowAttribute("acrylic-material", false)
-                    windowAgent.setWindowAttribute("mica", false)
-                    windowAgent.setWindowAttribute("mica-alt", false)
-                    windowAgent.setWindowAttribute("dwm-blur", true)
+            // 进度条
+            Item {
+                width: Math.max(100, parent.width * 0.3) // 最小宽度100
+                height: 40
+                Layout.fillWidth: true
+
+                Rectangle {
+                    anchors {
+                        verticalCenter: parent.verticalCenter
+                        left: parent.left
+                        right: parent.right
+                    }
+                    height: 4
+                    color: "#555555"
+                    radius: 2
+
+                    Rectangle {
+                        width: parent.width * 0.3
+                        height: parent.height
+                        color: "#1DB954"
+                        radius: 2
+                    }
                 }
             }
 
-            MenuItem {
-                enabled: Qt.platform.os === "windows"
-                text: qsTr("Acrylic material")
-                checkable: true
-                onTriggered: {
-                    window.color = "transparent"
-                    windowAgent.setWindowAttribute("dwm-blur", false)
-                    windowAgent.setWindowAttribute("mica", false)
-                    windowAgent.setWindowAttribute("mica-alt", false)
-                    windowAgent.setWindowAttribute("acrylic-material", true)
-                }
-            }
+            // 音量控制和其他按钮
+            Row {
+                spacing: 15
+                Layout.alignment: Qt.AlignVCenter
 
-            MenuItem {
-                enabled: Qt.platform.os === "windows"
-                text: qsTr("Mica")
-                checkable: true
-                onTriggered: {
-                    window.color = "transparent"
-                    windowAgent.setWindowAttribute("dwm-blur", false)
-                    windowAgent.setWindowAttribute("acrylic-material", false)
-                    windowAgent.setWindowAttribute("mica-alt", false)
-                    windowAgent.setWindowAttribute("mica", true)
+                Text {
+                    text: "🔊"
+                    color: "#FFFFFF"
+                    font.pixelSize: 14
                 }
-            }
 
-            MenuItem {
-                enabled: Qt.platform.os === "windows"
-                text: qsTr("Mica Alt")
-                checkable: true
-                onTriggered: {
-                    window.color = "transparent"
-                    windowAgent.setWindowAttribute("dwm-blur", false)
-                    windowAgent.setWindowAttribute("acrylic-material", false)
-                    windowAgent.setWindowAttribute("mica", false)
-                    windowAgent.setWindowAttribute("mica-alt", true)
+                Text {
+                    text: "☰"
+                    color: "#FFFFFF"
+                    font.pixelSize: 14
+                }
+
+                Text {
+                    text: "❤"
+                    color: "#FFFFFF"
+                    font.pixelSize: 14
                 }
             }
         }

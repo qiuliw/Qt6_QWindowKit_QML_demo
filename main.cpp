@@ -42,6 +42,7 @@ int main(int argc, char *argv[]) {
 #else
     const bool curveRenderingAvailable = false;
 #endif
+
     engine.rootContext()->setContextProperty(QStringLiteral("$curveRenderingAvailable"), QVariant(curveRenderingAvailable));
     QWK::registerTypes(&engine);
     engine.load(QUrl(QStringLiteral("qrc:/QWKExample/main.qml")));
