@@ -19,13 +19,16 @@ qt_add_executable(${PROJECT_NAME}
     main.cpp
 )
 
-qt_add_qml_module(${PROJECT_NAME}
+qt_add_qml_module(${PROJECT_NAME} # 默认导入项目的
     URI QPlayer
     VERSION 1.0
     QML_FILES 
         main.qml
         FramelessWindow.qml
         QWKButton.qml
+        layout/MainContent.qml
+        layout/BottomBar.qml
+        layout/LeftSideBar.qml
     RESOURCES
         resources/window-bar/close.svg
         resources/window-bar/fullscreen.svg
@@ -37,6 +40,7 @@ qt_add_qml_module(${PROJECT_NAME}
         resources/window-bar/pin-fill.svg
         resources/app/example.png
 )
+
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 
