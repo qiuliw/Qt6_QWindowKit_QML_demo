@@ -1,6 +1,0 @@
-[submodule "ThridParty/QWindowKit"]
-	path = ThridParty/QWindowKit
-	url = https://github.com/stdware/qwindowkit.git
-[submodule "qwindowkit"]
-	path = qwindowkit
-	url = https://github.com/stdware/qwindowkit.git

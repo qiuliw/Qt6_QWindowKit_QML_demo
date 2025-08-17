@@ -44,42 +44,24 @@ if (NOT QWindowKit_FOUND)
     )
 endif()
 
-
-# # Windows-specific settings
-# if(WIN32)
-#     # Add Windows manifest
-#     if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/app.manifest")
-#         set_target_properties(${PROJECT_NAME} PROPERTIES
-#             WIN32_EXECUTABLE TRUE
-#             LINK_FLAGS "/MANIFEST:NO"
-#         )
-#     endif()
-    
-#     # Copy QWindowKit runtime DLLs (if function exists)
-#     if(COMMAND qwindowkit_copy_runtime)
-#         qwindowkit_copy_runtime(${PROJECT_NAME})
-#     endif()
-# endif()
-
-# # macOS-specific settings
-# if(APPLE)
-#     set_target_properties(${PROJECT_NAME} PROPERTIES
-#         MACOSX_BUNDLE TRUE
-#     )
-    
-#     # Copy QWindowKit runtime libraries (if function exists)
-#     if(COMMAND qwindowkit_copy_runtime)
-#         qwindowkit_copy_runtime(${PROJECT_NAME})
-#     endif()
-# endif()
+# =======================
+# QWindowKit 拷贝运行时 DLL
+# =======================
 
 # =======================
 # QWindowKit 拷贝运行时 DLL
 # =======================
 function(qwindowkit_copy_runtime TARGET_NAME)
     if(WIN32)
+        # Add Windows manifest
+        if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/app.manifest")
+            set_target_properties(${TARGET_NAME} PROPERTIES
+                WIN32_EXECUTABLE TRUE
+                LINK_FLAGS "/MANIFEST:NO"
+            )
+        endif()
+        # Copy DLLs
         set(QWINDOWKIT_BIN_DIR "${QWINDOWKIT_ROOT_DIR}/bin")
-
         add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
                 COMMAND ${CMAKE_COMMAND} -E copy_directory
                 "${QWINDOWKIT_BIN_DIR}"
@@ -100,5 +82,3 @@ function(qwindowkit_copy_runtime TARGET_NAME)
         message(STATUS "QWindowKit shared libs will be copied from ${QWINDOWKIT_LIB_DIR} to target runtime dir")
     endif()
 endfunction()
-
-

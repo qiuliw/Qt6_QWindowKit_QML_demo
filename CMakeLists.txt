@@ -48,3 +48,8 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE Qt6::Quick
     PRIVATE QWindowKit::Quick
 )
+
+# Copy QWindowKit runtime DLLs to the target directory
+if(COMMAND qwindowkit_copy_runtime)
+    qwindowkit_copy_runtime(${PROJECT_NAME})
+endif()
