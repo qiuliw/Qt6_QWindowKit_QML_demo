@@ -3,16 +3,16 @@ import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QWindowKit 1.0
 import QtQuick.Layouts 1.15
+import QPlayer 1.0
 
-import './layout'
+import './layout' // 一个模块的文件会被放到同级目录下，可以直接引用
 
 Window {
     property bool showWhenReady: true
-
     id: window
     width: 1010
     height: 710
-    color: darkStyle.windowBackgroundColor
+    color: "#4e4ee9ff"
     title: qsTr("QPlayer")
     Component.onCompleted: {
         windowAgent.setup(window)
@@ -22,27 +22,7 @@ Window {
         }
     }
 
-    // 主题颜色
-    QtObject {
-        id: lightStyle
-        readonly property color windowBackgroundColor: "#1e1e2e"
-        readonly property color sidebarBackgroundColor: "#181825" 
-        readonly property color mainViewBackgroundColor: "#1e1e2e"
-        readonly property color bottomBarBackgroundColor: "#11111b"
-        readonly property color menuItemBackgroundColor: "#313244"
-        readonly property color menuItemHoverColor: "#45475a"
-        readonly property color titleBarBackgroundColor: "#11111b"
-    }
-    QtObject {
-        id: darkStyle
-        readonly property color windowBackgroundColor: "#1e1e2e"
-        readonly property color sidebarBackgroundColor: "#181825"
-        readonly property color mainViewBackgroundColor: "#1e1e2e"
-        readonly property color bottomBarBackgroundColor: "#11111b"
-        readonly property color menuItemBackgroundColor: "#313244"
-        readonly property color menuItemHoverColor: "#45475a"
-    }
-
+    // QWindowKit窗口代理
     WindowAgent {
         id: windowAgent
     }
@@ -56,10 +36,9 @@ Window {
             bottom: bottomBar.top
             left: parent.left
         }
-        color: lightStyle.sidebarBackgroundColor
     }
 
-    // 顶部栏 - 与 qwindowskit耦合，不能抽为组件
+    // 顶部栏 - 与 qwindowskit耦合，难抽为组件
     Rectangle {
         id: titleBar
         anchors {
@@ -68,9 +47,9 @@ Window {
             right: parent.right
         }
         height: 60
-        color: lightStyle.titleBarBackgroundColor
+        color: Theme.currentTheme.titleBarBackgroundColor
 
-        // 此组件创建时，将此组件与 qwindowskit 绑定，原生事件由此绑定
+        // 此组件创建时，将此组件与 qwindowskit 绑定，标题栏事件由此传入
         Component.onCompleted: windowAgent.setTitleBar(titleBar)
         
         // 内边距容器
@@ -92,8 +71,7 @@ Window {
                     height: 30
                     source: "qrc:/QPlayer/resources/window-bar/minimize.svg"
                     background: Rectangle {
-                        color: "transparent"
-                        border.color: minButton.hovered ? "#CCCCCC" : "transparent"
+                        color: minButton.hovered ? Theme.currentTheme.windowBottonHoverColor : "transparent"
                         radius: 2
                     }
                     onClicked: window.showMinimized()
@@ -106,8 +84,8 @@ Window {
                     height: 30
                     source: window.visibility === Window.Maximized ? "qrc:/QPlayer/resources/window-bar/restore.svg" : "qrc:/QPlayer/resources/window-bar/maximize.svg"
                     background: Rectangle {
-                        color: "transparent"
-                        border.color: maxButton.hovered ? "#CCCCCC" : "transparent"
+                        color: maxButton.hovered ? Theme.currentTheme.windowBottonHoverColor : "transparent"
+                        // border.color: maxButton.hovered ? "#CCCCCC" : "transparent"
                         radius: 2
                     }
                     onClicked: {
@@ -126,8 +104,7 @@ Window {
                     height: 30
                     source: "qrc:/QPlayer/resources/window-bar/close.svg"
                     background: Rectangle {
-                        color: "transparent"
-                        border.color: closeButton.hovered ? "#e81123" : "transparent"
+                        color: closeButton.hovered ? Theme.currentTheme.windowBottonHoverColor : "transparent"
                         radius: 2
                     }
                     onClicked: window.close()
@@ -146,7 +123,6 @@ Window {
             right: parent.right
             bottom: bottomBar.top
         }
-        color: lightStyle.mainViewBackgroundColor
 
     }
 

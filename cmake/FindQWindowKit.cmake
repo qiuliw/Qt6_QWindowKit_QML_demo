@@ -25,23 +25,32 @@ if (NOT QWindowKit_FOUND)
         set(QWINDOWKIT_WIDGETS_LIBRARY "${QWINDOWKIT_LIB_DIR}/libQWKWidgets.so")
     endif()
 
-    add_library(QWindowKit::Core UNKNOWN IMPORTED)
-    set_target_properties(QWindowKit::Core PROPERTIES
-        IMPORTED_LOCATION "${QWINDOWKIT_CORE_LIBRARY}"
-        INTERFACE_INCLUDE_DIRECTORIES "${QWINDOWKIT_INCLUDE_DIR}"
-    )
+    # Core
+    if(NOT TARGET QWindowKit::Core)
+        add_library(QWindowKit::Core UNKNOWN IMPORTED)
+        set_target_properties(QWindowKit::Core PROPERTIES
+            IMPORTED_LOCATION "${QWINDOWKIT_CORE_LIBRARY}"
+            INTERFACE_INCLUDE_DIRECTORIES "${QWINDOWKIT_INCLUDE_DIR}"
+        )
+    endif()
 
-    add_library(QWindowKit::Quick UNKNOWN IMPORTED)
-    set_target_properties(QWindowKit::Quick PROPERTIES
-        IMPORTED_LOCATION "${QWINDOWKIT_QUICK_LIBRARY}"
-        INTERFACE_INCLUDE_DIRECTORIES "${QWINDOWKIT_INCLUDE_DIR}"
-    )
+    # Quick
+    if(NOT TARGET QWindowKit::Quick)
+        add_library(QWindowKit::Quick UNKNOWN IMPORTED)
+        set_target_properties(QWindowKit::Quick PROPERTIES
+            IMPORTED_LOCATION "${QWINDOWKIT_QUICK_LIBRARY}"
+            INTERFACE_INCLUDE_DIRECTORIES "${QWINDOWKIT_INCLUDE_DIR}"
+        )
+    endif()
 
-    add_library(QWindowKit::Widgets UNKNOWN IMPORTED)
-    set_target_properties(QWindowKit::Widgets PROPERTIES
-        IMPORTED_LOCATION "${QWINDOWKIT_WIDGETS_LIBRARY}"
-        INTERFACE_INCLUDE_DIRECTORIES "${QWINDOWKIT_INCLUDE_DIR}"
-    )
+    # Widgets
+    if(NOT TARGET QWindowKit::Widgets)
+        add_library(QWindowKit::Widgets UNKNOWN IMPORTED)
+        set_target_properties(QWindowKit::Widgets PROPERTIES
+            IMPORTED_LOCATION "${QWINDOWKIT_WIDGETS_LIBRARY}"
+            INTERFACE_INCLUDE_DIRECTORIES "${QWINDOWKIT_INCLUDE_DIR}"
+        )
+    endif()
 endif()
 
 # =======================

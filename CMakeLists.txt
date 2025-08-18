@@ -19,6 +19,9 @@ qt_add_executable(${PROJECT_NAME}
     main.cpp
 )
 
+set_source_files_properties(layout/Theme.qml
+    PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
+
 qt_add_qml_module(${PROJECT_NAME} # 默认导入项目的
     URI QPlayer
     VERSION 1.0
@@ -26,6 +29,7 @@ qt_add_qml_module(${PROJECT_NAME} # 默认导入项目的
         main.qml
         FramelessWindow.qml
         QWKButton.qml
+        layout/Theme.qml
         layout/MainContent.qml
         layout/BottomBar.qml
         layout/LeftSideBar.qml
@@ -39,6 +43,7 @@ qt_add_qml_module(${PROJECT_NAME} # 默认导入项目的
         resources/window-bar/pin.svg
         resources/window-bar/pin-fill.svg
         resources/app/example.png
+
 )
 
 
