@@ -43,13 +43,6 @@ Window {
         readonly property color menuItemHoverColor: "#45475a"
     }
 
-    // Timer {
-    //     interval: 100
-    //     running: true
-    //     repeat: true
-    //     onTriggered: timeLabel.text = Qt.formatTime(new Date(), "hh:mm:ss")
-    // }
-
     WindowAgent {
         id: windowAgent
     }
@@ -166,6 +159,5 @@ Window {
             bottom: parent.bottom
         }
         height: 60
-        // color: darkStyle.bottomBarBackgroundColor
     }
 }
