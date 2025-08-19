@@ -4,8 +4,11 @@ project(QPlayer VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-# 生成QMLLS.ini供QMLLS使用
-set(QT_QML_GENERATE_QMLLS_INI ON)
+
+# 设置所有配置的输出目录
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)  # 可执行文件和Windows DLL
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)  # Linux/macOS 动态库
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)  # 静态库
 
 add_subdirectory(cmake)
 
@@ -54,4 +57,4 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE QWindowKit::Quick
 )
 
-qPlayer_add_runtime_dlls(${PROJECT_NAME})
+qt_deploy_runtime(${PROJECT_NAME})

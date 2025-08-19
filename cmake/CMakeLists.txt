@@ -9,7 +9,4 @@ project(cmakehelper VERSION 1.0 LANGUAGES NONE)
 include(external/qwindowkit.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/qtruntime.cmake)
 
-function(qPlayer_add_runtime_dlls target)
-    qwindowkit_copy_runtime(${target})
-    qt_deploy_runtime(${target})
-endfunction()
+    
