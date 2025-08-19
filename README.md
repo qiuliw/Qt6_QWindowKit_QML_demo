@@ -23,6 +23,8 @@ QML_MusicPlay/
 ```bash
 # 克隆项目
 git clone <repository-url>
+# 拉取子模块
+git submodule update --init --recursive
 cd QML_MusicPlay
 
 # Debug 构建
