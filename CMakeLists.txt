@@ -4,16 +4,12 @@ project(QPlayer VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 # 生成QMLLS.ini供QMLLS使用
 set(QT_QML_GENERATE_QMLLS_INI ON)
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+add_subdirectory(cmake)
 
 find_package(Qt6 6.2 COMPONENTS Core Gui Qml Quick REQUIRED)
-
-list(APPEND CMAKE_PREFIX_PATH "D:/Software/qwindowkit/install/lib/cmake")
-find_package(QWindowKit REQUIRED)
 
 qt_add_executable(${PROJECT_NAME}
     main.cpp
@@ -28,11 +24,12 @@ qt_add_qml_module(${PROJECT_NAME} # 默认导入项目的
     QML_FILES 
         main.qml
         FramelessWindow.qml
-        QWKButton.qml
         layout/Theme.qml
         layout/MainContent.qml
         layout/BottomBar.qml
         layout/LeftSideBar.qml
+        components/QWKButton.qml
+
     RESOURCES
         resources/window-bar/close.svg
         resources/window-bar/fullscreen.svg
@@ -43,7 +40,6 @@ qt_add_qml_module(${PROJECT_NAME} # 默认导入项目的
         resources/window-bar/pin.svg
         resources/window-bar/pin-fill.svg
         resources/app/example.png
-
 )
 
 
@@ -58,7 +54,4 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE QWindowKit::Quick
 )
 
-# Copy QWindowKit runtime DLLs to the target directory
-if(COMMAND qwindowkit_copy_runtime)
-    qwindowkit_copy_runtime(${PROJECT_NAME})
-endif()
+qPlayer_add_runtime_dlls(${PROJECT_NAME})

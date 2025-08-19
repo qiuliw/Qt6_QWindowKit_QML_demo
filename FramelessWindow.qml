@@ -6,6 +6,7 @@ import QPlayer
 import QWindowKit
 
 import './layout' // 一个模块的文件会被放到同级目录下，可以直接引用
+import './components'
 
 Window {
     property bool showWhenReady: true
@@ -38,7 +39,7 @@ Window {
         }
     }
 
-    // 顶部栏 - 与 qwindowskit耦合，难抽为组件
+    // 顶部栏 - 与qwindowskit和window耦合，难抽为组件
     Rectangle {
         id: titleBar
         anchors {
