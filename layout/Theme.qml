@@ -1,6 +1,6 @@
 pragma Singleton
 import QtQuick 2.15
-import Qt.labs.settings 1.1
+import QtCore
 
 Item {
 
@@ -9,7 +9,7 @@ Item {
         id: settings
         category: "Theme"
         property string mode: "default"   // "default" or "custom"
-        property int defaultIndex: 0
+        property int defaultIndex: 2
         property var customThemes: []     // 保存多个自定义主题
         property int customIndex: -1      // 当前使用的自定义主题下标
     }
@@ -19,28 +19,38 @@ Item {
         {
             name: "Light",
             fontColor: "#572920",
-            windowBackgroundColor: "#b812ffff",            
-            sidebarBackgroundColor: "#00e463ff",
+            windowBackgroundColor: "#ffffff",
+            mainContentBackgroundColor: "#b812ffff",            
             bottomBarBackgroundColor: "#ffe9e9ff",
             titleBarBackgroundColor: "#901212ff",
-
+            sidebarBackgroundColor: "#252535",
             windowBottonHoverColor: "#4646460a",
 
+            // SIDEBAR
+            logoFontColor: "#79e300ff"
         },
         {
             name: "Dark",
             windowBackgroundColor: "#1e1e2e",
             fontColor: "#ffffff",
+            sidebarBackgroundColor: "#2d2d3d",  // 添加缺失的侧边栏背景色
+            bottomBarBackgroundColor: "#252535",
+            titleBarBackgroundColor: "#1a1a2a",
+            windowBottonHoverColor: "#4646460a",
         },
         {
             name: "Blue",
             windowBackgroundColor: "#eaf2ff",
             fontColor: "#1c3d6e",
+            sidebarBackgroundColor: "#d0e1ff",  // 添加缺失的侧边栏背景色
+            bottomBarBackgroundColor: "#c5d9f5",
+            titleBarBackgroundColor: "#a3c2f2",
+            windowBottonHoverColor: "#4646460a",
         }
     ]
 
     // 当前主题（对外唯一暴露接口）
-    property var currentTheme: defaultThemes[defaultIndex]
+    property var currentTheme: defaultThemes[settings.defaultIndex]
 
     // 初始化时加载配置
     Component.onCompleted: {

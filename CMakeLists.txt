@@ -5,14 +5,14 @@ project(QPlayer VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-list(APPEND CMAKE_PREFIX_PATH "D:/Software/qwindowkit/install/lib/cmake")
-# Set module path for custom find scripts
+# 生成QMLLS.ini供QMLLS使用
+set(QT_QML_GENERATE_QMLLS_INI ON)
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-# Find Qt first
 find_package(Qt6 6.2 COMPONENTS Core Gui Qml Quick REQUIRED)
 
-# Find QWindowKit
+list(APPEND CMAKE_PREFIX_PATH "D:/Software/qwindowkit/install/lib/cmake")
 find_package(QWindowKit REQUIRED)
 
 qt_add_executable(${PROJECT_NAME}

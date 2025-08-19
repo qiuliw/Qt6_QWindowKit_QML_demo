@@ -1,5 +1,5 @@
 import QtQuick
-import QPlayer 1.0
+import QPlayer
 Rectangle{
     color: Theme.currentTheme.bottomBarBackgroundColor
 }

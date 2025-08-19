@@ -1,9 +1,9 @@
 import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
-import QWindowKit 1.0
-import QtQuick.Layouts 1.15
-import QPlayer 1.0
+import QtQuick.Layouts
+import QPlayer
+import QWindowKit
 
 import './layout' // 一个模块的文件会被放到同级目录下，可以直接引用
 
@@ -12,7 +12,7 @@ Window {
     id: window
     width: 1010
     height: 710
-    color: "#4e4ee9ff"
+    color: Theme.currentTheme.windowBackgroundColor
     title: qsTr("QPlayer")
     Component.onCompleted: {
         windowAgent.setup(window)
@@ -123,7 +123,6 @@ Window {
             right: parent.right
             bottom: bottomBar.top
         }
-
     }
 
     // 底部栏

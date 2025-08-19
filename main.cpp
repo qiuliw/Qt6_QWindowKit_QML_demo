@@ -37,6 +37,14 @@ int main(int argc, char *argv[]) {
     // Make sure alpha channel is requested, our special effects on Windows depends on it.
     QQuickWindow::setDefaultAlphaBuffer(true);
     QQmlApplicationEngine engine;
+
+    //////// settings
+    ///
+    application.setOrganizationName("Stdware");
+    application.setOrganizationDomain("stdware.dev"); // 或者你的域名
+    application.setApplicationName("QPlayer");
+
+
 #if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
     const bool curveRenderingAvailable = true;
 #else
